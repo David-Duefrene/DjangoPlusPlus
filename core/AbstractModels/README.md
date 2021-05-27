@@ -1,5 +1,5 @@
 # Abstract Models
-This section contains all abstract models
+This section contains all abstract models.
 
 ## Folder Structure
-- AbstractBaseUser/ A basic user shared amongst other users
+- AbstractBaseUser/ A basic abstracted user used for custom inheritance.
