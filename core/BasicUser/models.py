@@ -14,10 +14,10 @@ class BasicUser(AbstractBasicUser, models.Model):
 
     Attributes:
         URL_view_name: The view name get_absolute_url will lookup via reverse
-            default is basic_edit_account.
+            default is api_edit_account.
     """
 
-    URL_view_name = CharField(max_length=256, default='basic_edit_account')
+    URL_view_name = CharField(max_length=256, default='api_edit_account')
 
     @property
     def get_absolute_url(self):

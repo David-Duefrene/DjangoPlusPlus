@@ -42,7 +42,7 @@ class RegisterAPITest(APITestCase):
         Returns: server response.
         """
         return self.client.post(
-            reverse('basic_create_account'), self.user_data, format='json')
+            reverse('api_create_user'), self.user_data, format='json')
 
     def test_can_create_account(self):
         """Tests that we can create an account."""

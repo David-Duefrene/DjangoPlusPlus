@@ -44,7 +44,7 @@ class LoginAPITest(APITestCase):
 
         Returns the server response.
         """
-        return self.client.post(reverse('basic_login'), self.login_data)
+        return self.client.post(reverse('api_login'), self.login_data)
 
     def test_valid_credentials_can_login(self):
         """Test to make sure valid data can login.

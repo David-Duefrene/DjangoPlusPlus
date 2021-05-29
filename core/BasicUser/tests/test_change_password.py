@@ -32,7 +32,7 @@ class ChangePasswordAPITest(APITestCase):
         password.
         """
         self.client.force_authenticate(user=self.user)
-        response = self.client.put(reverse('basic_change_password'), {})
+        response = self.client.put(reverse('api_change_password'), {})
         error = [ErrorDetail(string='This field is required.',
                              code='required')]
 
@@ -47,7 +47,7 @@ class ChangePasswordAPITest(APITestCase):
         """
         data = {"old_password": 'password', "new_password": "newpw"}
         self.client.force_authenticate(user=self.user)
-        response = self.client.put(reverse('basic_change_password'), data)
+        response = self.client.put(reverse('api_change_password'), data)
 
         self.assertEqual(response.data['status'], 'success')
         self.assertEqual(response.data['message'],

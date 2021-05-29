@@ -11,11 +11,11 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('auth/', include('knox.urls')),
-    path('create/', UserAPI.as_view(), name='basic_create_account'),
-    path('login/', LoginAPI, name='basic_login'),
-    path('logout/', LogoutView.as_view(), name='basic_logout_API'),
-    path('edit/', UserAPI.as_view(), name='basic_edit_account'),
-    path('change_password/', ChangePasswordAPI, name='basic_change_password'),
+    path('create/', UserAPI.as_view(), name='api_create_user'),
+    path('login/', LoginAPI, name='api_login'),
+    path('logout/', LogoutView.as_view(), name='api_logout_API'),
+    path('edit/', UserAPI.as_view(), name='api_edit_account'),
+    path('change_password/', ChangePasswordAPI, name='api_change_password'),
     path('reset_password/', include('django_rest_passwordreset.urls',
-         namespace='basic_reset_password')),
+         namespace='api_reset_password')),
 ] + router.urls
