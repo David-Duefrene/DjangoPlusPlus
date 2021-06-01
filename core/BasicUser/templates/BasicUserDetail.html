@@ -1,0 +1,8 @@
+{% block content %}
+    <h2>User Details</h2>
+    <ul>
+        {% for details in object_list %}
+            <li>{{ details }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
