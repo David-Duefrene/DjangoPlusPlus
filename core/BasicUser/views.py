@@ -1,9 +1,18 @@
 """Views using Django templates to be used to show the Basic User model."""
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
+from django.contrib.auth.views import LoginView
 
 from .models import BasicUser
 from .forms import CreateBasicUserForm
+
+
+class CreateBasicUser(CreateView):
+    """Creates a basic user"""
+
+    form_class = CreateBasicUserForm
+    success_url = reverse_lazy('template_user_list')
+    template_name = "CreateBasicUser.html"
 
 
 class ListBasicUser(ListView):
@@ -21,9 +30,11 @@ class BasicUserDetail(DetailView):
     template_name = 'BasicUserDetail.html'
 
 
-class CreateBasicUser(CreateView):
-    """Creates a basic user"""
+class LoginUser(LoginView):
+    """Logs a user in."""
 
-    form_class = CreateBasicUserForm
-    success_url = reverse_lazy('template_user_detail')
-    template_name = "CreateBasicUser.html"
+    success_url = reverse_lazy('template_list_all_users')
+
+    def get_success_url(self):
+        """Return success URL."""
+        return self.success_url
