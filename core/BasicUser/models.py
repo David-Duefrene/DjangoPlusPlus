@@ -1,4 +1,4 @@
-"""Model describing a Basic User."""
+"""Model describing a Basic User for Django REST."""
 from django.db.models import CharField
 from django.db import models
 from django.urls import reverse

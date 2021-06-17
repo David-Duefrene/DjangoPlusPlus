@@ -3,7 +3,8 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from django.contrib.auth.views import LogoutView
 
-from .views import ListBasicUser, BasicUserDetail, CreateBasicUser, LoginUser
+from .views import ListBasicUser, BasicUserDetail, CreateBasicUser, \
+    LoginUser, UpdateUserView
 
 router = DefaultRouter()
 
@@ -17,4 +18,5 @@ urlpatterns = [
          name='template_login'),
     path('logout/', LogoutView.as_view(template_name='Logout.html'),
          name='template_logout'),
+    path('edit/<pk>', UpdateUserView.as_view(), name='template_edit_user'),
 ] + router.urls

@@ -15,8 +15,9 @@ SECRET_KEY = 'django-insecure-!y0sh*vykmc0sqe(e-h806=be8x8qa$_m_!#m-hblkdmnl*m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CORS_ORIGIN_ALLOW_ALL = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'django_rest_passwordreset',
     'knox',
     'AbstractModels.AbstractBaseUser',
@@ -100,3 +102,13 @@ STATIC_URL = '/static/'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# DRF Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'PASSWORD_RESET_SERIALIZER':
+        'BaseUser.serializers.PasswordResetSerializer',
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 25,
+}
