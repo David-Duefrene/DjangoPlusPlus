@@ -39,7 +39,7 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
 
     """
 
-    serializer = BasicUserSerializer
+    serializer_class = BasicUserSerializer
     register_serializer = RegisterSerializer
     edit_serializer = EditSerializer
     permissions = IsAuthenticated
