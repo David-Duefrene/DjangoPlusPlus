@@ -11,7 +11,7 @@ router = DefaultRouter()
 urlpatterns = [
     path('createuser/', CreateBasicUser.as_view(),
          name='template_create_user'),
-    path('userlist/', ListBasicUser.as_view(), name='template_list_all_users'),
+    path('userlist/', ListBasicUser.as_view(), name='template_user_list'),
     path('userdetail/<pk>', BasicUserDetail.as_view(),
          name='template_user_detail'),
     path('login/', LoginUser.as_view(template_name='Login.html'),

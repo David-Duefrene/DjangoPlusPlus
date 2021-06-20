@@ -1,6 +1,7 @@
 """Abstract models for a basic user account."""
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.db.models import EmailField, DateTimeField, BigAutoField
+from django.db.models import EmailField, DateTimeField, BigAutoField, CharField
+from django.urls import reverse
 
 
 class AbstractBasicUser(AbstractUser):
@@ -25,6 +26,7 @@ class AbstractBasicUser(AbstractUser):
     id = BigAutoField(primary_key=True)
     email = EmailField(blank=True)
     created = DateTimeField(auto_now_add=True, db_index=True)
+    URL_view_name = CharField(max_length=256, default='api_edit_account')
 
     class Meta:
         """The Meta.
@@ -42,3 +44,8 @@ class AbstractBasicUser(AbstractUser):
         if self.get_full_name() == '':
             return self.username
         return f'{self.first_name} {self.last_name}'
+
+    @property
+    def get_absolute_url(self):
+        """Return the edit profile url."""
+        return reverse(self.URL_view_name)
