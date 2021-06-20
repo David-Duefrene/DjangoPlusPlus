@@ -1,7 +1,9 @@
-"""Abstract models for a basic user account."""
+"""Abstract models for an abstracted basic user account."""
+from decimal import InvalidOperation
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.db.models import EmailField, DateTimeField, BigAutoField, CharField
+from django.db.models import EmailField, DateTimeField, BigAutoField
 from django.urls import reverse
+from django.conf import settings
 
 
 class AbstractBasicUser(AbstractUser):
@@ -26,7 +28,6 @@ class AbstractBasicUser(AbstractUser):
     id = BigAutoField(primary_key=True)
     email = EmailField(blank=True)
     created = DateTimeField(auto_now_add=True, db_index=True)
-    URL_view_name = CharField(max_length=256, default='api_edit_account')
 
     class Meta:
         """The Meta.
@@ -48,4 +49,12 @@ class AbstractBasicUser(AbstractUser):
     @property
     def get_absolute_url(self):
         """Return the edit profile url."""
-        return reverse(self.URL_view_name)
+        try:
+            if settings.RESPONSE_MODE == 'API':
+                return reverse('api_edit_account')
+            raise InvalidOperation('Invalid Response Mode')
+
+        except InvalidOperation:
+            print('\033[91m ERROR: INVALID RESPONSE_MODE SET IN YOUR SETTING.PY\033[0m')  # noqa: E501
+        except NameError:
+            print('\033[91m ERROR: RESPONSE_MODE NOT SET IN YOUR SETTING.PY\033[0m')  # noqa: E501
