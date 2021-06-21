@@ -14,6 +14,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 from knox.models import AuthToken
 
+from .models import BasicUser
 from .serializers import BasicUserSerializer, LoginSerializer, \
     RegisterSerializer, ChangePasswordSerializer, EditSerializer
 
@@ -39,11 +40,12 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
 
     """
 
-    serializer = BasicUserSerializer
+    serializer_class = BasicUserSerializer
     register_serializer = RegisterSerializer
     edit_serializer = EditSerializer
     permissions = IsAuthenticated
     create_permission = AllowAny
+    queryset = BasicUser.objects.all()
 
     def get_permissions(self):
         """Return allow anyone to POST but require auth for everything else."""
@@ -109,7 +111,7 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
             user = serializer.save()
 
             return Response({
-                "user": self.serializer(
+                "user": self.serializer_class(
                     user, context=self.get_serializer_context()).data,
                 "token": AuthToken.objects.create(user)[1],
             })
