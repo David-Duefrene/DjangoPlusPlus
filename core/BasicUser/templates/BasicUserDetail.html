@@ -1,6 +1,10 @@
 {% block content %}
-    <h2>User Detailss</h2>
+    <h2>User Details</h2>
     <ul>
-        <li>{{ BasicUserDetail }}</li>
+        <li>Username: {{BasicUserDetail.username}}</li>
+        <li>First Name: {{BasicUserDetail.first_name}}</li>
+        <li>Last Name: {{BasicUserDetail.last_name}}</li>
+        <li>Email: {{BasicUserDetail.email}}</li>
+        <li>Profile URL: {{BasicUserDetail.get_absolute_url}}</li>
     </ul>
 {% endblock %}
