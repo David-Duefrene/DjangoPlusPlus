@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView
 
 from knox.models import AuthToken
 
@@ -25,11 +25,12 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
     Allows user to retrieve, create, update, delete their own account.
 
     Attributes:
-        serializer: Default serializer.
-        register_serializer: Serializer to register a user.
-        edit_serializer: Serializer to Edit a user.
-        permissions: Default permissions.
-        create_permission: Permissions for creating a user.
+        serializer_class: Default serializer set to BasicUserSerializer.
+        register_serializer: Register serializer set to RegisterSerializer.
+        edit_serializer: Edit serializer set to EditSerializer.
+        permissions: Default permissions, set to is authenticated.
+        create_permission: Allows anyone to create a user.
+        queryset: Sets all users by default
 
     Methods:
         get_permissions(self): Returns IsAuthenticated unless it's a POST
@@ -118,6 +119,24 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
 
         except KeyError as error:
             return Response({'Error': str(error) + ' cannot be None'})
+
+
+class ListUsersAPI(ListAPIView):
+    """Retrieves a list of basic users.
+
+    Allows anyone to retrieve a list of basic users.
+
+    Attributes:
+        queryset: Sets all users by default
+        serializer_class: Default serializer set to BasicUserSerializer.
+        permissions: Default permissions, set to is authenticated.
+        create_permission: Allows anyone to create a user.
+
+    Methods:
+    """
+
+    queryset = BasicUser.objects.all()
+    serializer_class = BasicUserSerializer
 
 
 @api_view(['POST'])
