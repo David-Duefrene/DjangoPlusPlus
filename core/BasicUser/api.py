@@ -129,10 +129,6 @@ class ListUsersAPI(ListAPIView):
     Attributes:
         queryset: Sets all users by default
         serializer_class: Default serializer set to BasicUserSerializer.
-        permissions: Default permissions, set to is authenticated.
-        create_permission: Allows anyone to create a user.
-
-    Methods:
     """
 
     queryset = BasicUser.objects.all()
