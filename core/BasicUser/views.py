@@ -45,13 +45,33 @@ class LoginUser(LoginView):
         return self.success_url
 
 
-class UpdateUserView(UpdateView):
-    """Update the user."""
+class UpdateUserView(LoginRequiredMixin, UpdateView):
+    """Update the user.
+
+    Allows a user to update their own profile.
+
+    Attributes:
+        model: Set to BasicUser
+        fields: only allows email, first and last names to be modified
+        template_name: The template to be rendered, default EditBasicUser
+
+    Methods:
+        get_object: Make sure only the user can update their account
+        get_success_url: Returns the user profile if successful
+    """
 
     model = BasicUser
     fields = ['first_name', 'last_name', 'email']
     template_name = 'EditBasicUser.html'
-    success_url = reverse_lazy('template_user_detail')
+
+    def get_object(self, queryset=None):
+        """Ensure user can only update their own account."""
+        return self.request.user
+
+    def get_success_url(self):
+        """Return the user profile URL."""
+        return reverse_lazy('template_user_detail',
+                            kwargs={'pk': self.request.user.id})
 
 
 class DeleteUserView(LoginRequiredMixin, DeleteView):

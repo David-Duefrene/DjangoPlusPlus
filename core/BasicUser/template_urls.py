@@ -21,7 +21,7 @@ urlpatterns = [
          name='template_login'),
     path('logout/', LogoutView.as_view(template_name='Logout.html'),
          name='template_logout'),
-    path('edit/<pk>', UpdateUserView.as_view(), name='template_edit_user'),
+    path('edit/', UpdateUserView.as_view(), name='template_edit_user'),
     path('delete/', DeleteUserView.as_view(), name='template_delete_user'),
 
     # Reset password
