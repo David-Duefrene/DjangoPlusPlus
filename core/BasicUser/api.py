@@ -37,7 +37,8 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
             method, then returns AllowAny.
         patch(self, request, *args, **kwargs): Allow an authenticated user to
             update their profile.
-        create(self, request, *args, **kwargs): Creates a BaseUser.
+        post(self, request, *args, **kwargs): Creates a BasicUser.
+        delete(self, request, *args, **kwargs): Deletes a BasicUser.
 
     """
 
@@ -119,6 +120,11 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
 
         except KeyError as error:
             return Response({'Error': str(error) + ' cannot be None'})
+
+    def delete(self, request, *args, **kwargs):
+        """Delete a user, requires authentication"""
+        request.user.delete()
+        return Response({'Success': 'User has been deleted'})
 
 
 class ListUsersAPI(ListAPIView):
