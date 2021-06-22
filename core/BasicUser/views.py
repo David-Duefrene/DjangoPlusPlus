@@ -1,8 +1,8 @@
 """Views using Django templates to be used to show the Basic User model."""
-from django.urls.base import reverse
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 
 from .models import BasicUser
@@ -33,9 +33,12 @@ class BasicUserDetail(DetailView):
 
 
 class LoginUser(LoginView):
-    """Logs a user in."""
+    """Logs a user in.
 
-    success_url = reverse_lazy('template_list_all_users')
+    Required due to diffrent URL structure than default.
+    """
+
+    success_url = reverse_lazy('template_user_list')
 
     def get_success_url(self):
         """Return success URL."""
@@ -48,8 +51,30 @@ class UpdateUserView(UpdateView):
     model = BasicUser
     fields = ['first_name', 'last_name', 'email']
     template_name = 'EditBasicUser.html'
-    success_url = 'template_user_detail'
+    success_url = reverse_lazy('template_user_detail')
 
-    def get_success_url(self):
-        """Get the URL for the user."""
-        return(reverse(self.success_url, args=(self.object.id,)))
+
+class DeleteUserView(LoginRequiredMixin, DeleteView):
+    """Delete the currently logged in user.
+
+    Permits a user to delete their own account.
+
+    Attributes:
+        model: Set to BasicUser
+        template_name: The template used to confirm deletion
+        success_url: The URL to go to when successful
+        login_url: The URL to go to if the user is not logged in
+
+    Methods:
+        get_object(self, queryset=None): Returns the currently logged in user
+    """
+
+    model = BasicUser
+    template_name = 'DeleteUser.html'
+    # TODO change to homepage after creating it
+    success_url = reverse_lazy('template_user_list')
+    login_url = reverse_lazy('template_login')
+
+    def get_object(self, queryset=None):
+        """Ensure user can only delete their own account."""
+        return self.request.user
