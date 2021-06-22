@@ -1,4 +1,5 @@
 """API for detached head for the basic user module."""
+# Django imports
 from django.dispatch import receiver
 from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
@@ -6,14 +7,17 @@ from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 
+# Django REST imports
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView
 
+# Knox imports
 from knox.models import AuthToken
 
+# Project imports
 from .models import BasicUser
 from .serializers import BasicUserSerializer, LoginSerializer, \
     RegisterSerializer, ChangePasswordSerializer, EditSerializer
@@ -47,12 +51,19 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
     edit_serializer = EditSerializer
     permissions = IsAuthenticated
     create_permission = AllowAny
+    retrieve_profile_permission = AllowAny
     queryset = BasicUser.objects.all()
 
     def get_permissions(self):
-        """Return allow anyone to POST but require auth for everything else."""
+        """Return proper permissions based on method.
+
+        Allows anyone to create and retrieve users but requires authentication
+        for everything else.
+        """
         if self.request.method == 'POST':
             return (self.create_permission(),)
+        elif self.request.method == 'GET':
+            return (self.retrieve_profile_permission(),)
         return (self.permissions(),)
 
     def patch(self, request, *args, **kwargs):
@@ -65,6 +76,11 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
             first_name: User's first name
             last_name: User's last name
             email: User's email
+
+        Response Data: JSON(string)
+            first_name: User's new first name
+            last_name: User's new last name
+            email: User's new email
         """
         try:
             instance = request.user
@@ -83,23 +99,23 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
             return Response({'Error': str(error) + ' cannot be None'})
 
     def post(self, request, *args, **kwargs):
-        """Create an Basic User.
+        """Create a Basic User.
 
-        Allows a non-authenticated user to create an account
+        Allows a non-authenticated user to create an account.
 
         Request.data: JSON(string)
             username: The new users username
             password: The new users password
             email: The new users email optional
-            first_name: The new users first_name optional
+            first_name: The new users first name optional
             last name: The new users last name optional
 
         Returns Response: JSON(string)
             user(object): The user who just logged in
                 username: The user's username
                 email: The user's email
-                first_name: The new users first_name optional
-                last name: The new users last name optional
+                first_name: The new users first name
+                last name: The new users last name
                 get_absolute_url: The url to edit the user
             token: The new user's authentication token
         """
@@ -122,7 +138,14 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
             return Response({'Error': str(error) + ' cannot be None'})
 
     def delete(self, request, *args, **kwargs):
-        """Delete a user, requires authentication"""
+        """Delete a user, requires authentication.
+
+        Allows a user to delete their own account. No body is expected but
+        does require authentication.
+
+        Returns Response: JSON(string)
+            Success: Confirmst if the user has been deleted.
+        """
         request.user.delete()
         return Response({'Success': 'User has been deleted'})
 

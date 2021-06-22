@@ -1,10 +1,13 @@
 """URLs list for the basic user model using Django's template system."""
+# Django imports
 from django.urls import path
 from django.contrib.auth.views import LogoutView, PasswordResetView, \
     PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 
+# Django REST imports
 from rest_framework.routers import DefaultRouter
 
+# Project imports
 from .views import ListBasicUser, BasicUserDetail, CreateBasicUser, \
     LoginUser, UpdateUserView, DeleteUserView
 

@@ -1,10 +1,14 @@
 """URLs list for the basic user module."""
+# Django imports
 from django.urls import path, include
 
+# Django REST imports
 from rest_framework.routers import DefaultRouter
 
+# Knox imports
 from knox.views import LogoutView
 
+# Project imports
 from .api import UserAPI, LoginAPI, ChangePasswordAPI, ListUsersAPI
 
 router = DefaultRouter()
@@ -21,8 +25,10 @@ urlpatterns = [
     path('login/', LoginAPI, name='api_login'),
     path('logout/', LogoutView.as_view(), name='api_logout_API'),
     path('edit/', UserAPI.as_view(), name='api_edit_account'),
+    path('delete/', UserAPI.as_view(), name='api_delete_user'),
+
+    # Passwords
     path('change_password/', ChangePasswordAPI, name='api_change_password'),
     path('reset_password/', include('django_rest_passwordreset.urls',
          namespace='api_reset_password')),
-    path('delete/', UserAPI.as_view(), name='api_delete_user'),
 ] + router.urls

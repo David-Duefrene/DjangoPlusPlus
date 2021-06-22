@@ -1,16 +1,28 @@
 """Views using Django templates to be used to show the Basic User model."""
+# Django imports
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 
+# Project imports
 from .models import BasicUser
 from .forms import CreateBasicUserForm
 
 
 class CreateBasicUser(CreateView):
-    """Creates a basic user"""
+    """Create a basic user.
+
+    Allows anyone to create a basic user.
+
+    Attributes:
+        form_class: Default form class is CreateBasicUserForm
+        success_url: Default URL to go to when account is created, default is
+            set the template user list page
+        template_name: Name of the template to render, default is
+            /CreateBasicUser.html
+    """
 
     form_class = CreateBasicUserForm
     success_url = reverse_lazy('template_user_list')
@@ -18,14 +30,31 @@ class CreateBasicUser(CreateView):
 
 
 class ListBasicUser(ListView):
-    """List all basic users in the database."""
+    """List all basic users in the database.
+
+    Allows anyone to view a list of basic users.
+
+    Attributes:
+        model: Model to use, set to BasicUser
+        template_name: Name of the template to render, default is
+            /ListBasicUser.html
+    """
 
     model = BasicUser
     template_name = 'ListBasicUser.html'
 
 
 class BasicUserDetail(DetailView):
-    """Gives the details to an individual user."""
+    """Gives the details for an individual user.
+
+    Allows anyone to retrieve details for an individual user
+
+    Attributes:
+        context_object_name: Set to BasicUserDetail
+        queryset: Sets all users by default
+        template_name: Name of the template to render, default is
+            /BasicUserDetail.html
+    """
 
     context_object_name = 'BasicUserDetail'
     queryset = BasicUser.objects.all()
@@ -35,7 +64,14 @@ class BasicUserDetail(DetailView):
 class LoginUser(LoginView):
     """Logs a user in.
 
-    Required due to diffrent URL structure than default.
+    Required due to diffrent URL structure than Django's default.
+
+    Attributes:
+        success_url: Default URL to go to when account is created, default is
+            set the template user list page
+
+    Methods:
+        get_success_url(self): Returns the success_url
     """
 
     success_url = reverse_lazy('template_user_list')

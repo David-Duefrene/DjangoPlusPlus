@@ -1,4 +1,4 @@
-"""Abstract models for an abstracted basic user account."""
+"""Abstract model for an abstracted basic user account."""
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db.models import EmailField, DateTimeField, BigAutoField
 
