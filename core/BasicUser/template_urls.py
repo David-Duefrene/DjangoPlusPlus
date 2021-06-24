@@ -30,13 +30,14 @@ urlpatterns = [
     # Reset password
     path('password_reset/', PasswordResetView.as_view(
         template_name='password/password_reset_form.html'),
-        name='password_reset'),
+        name='template_password_reset'),
     path('password_reset/done/', PasswordResetDoneView.as_view(
-        template_name='Password_Reset_Done.html'), name='password_reset_done'),
+        template_name='Password_Reset_Done.html'),
+        name='template_password_reset_done'),
     path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
-        template_name='Password_Reset_Confirm.html'),
+        template_name='template_Password_Reset_Confirm.html'),
         name='password_reset_confirm'),
     path('reset/done/', PasswordResetCompleteView.as_view(
-        template_name='password_reset_complete.html'),
+        template_name='template_password_reset_complete.html'),
         name='password_reset_complete'),
 ] + router.urls

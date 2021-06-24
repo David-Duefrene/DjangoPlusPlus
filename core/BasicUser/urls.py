@@ -9,7 +9,8 @@ from rest_framework.routers import DefaultRouter
 from knox.views import LogoutView
 
 # Project imports
-from .api import UserAPI, LoginAPI, ChangePasswordAPI, ListUsersAPI
+from .api import UserAPI, LoginAPI, ChangePasswordAPI, ListUsersAPI, \
+    PasswordResetAPI, PasswordResetConfirmAPI
 
 router = DefaultRouter()
 
@@ -29,6 +30,7 @@ urlpatterns = [
 
     # Passwords
     path('change_password/', ChangePasswordAPI, name='api_change_password'),
-    path('reset_password/', include('django_rest_passwordreset.urls',
-         namespace='api_reset_password')),
+    path('reset_password/', PasswordResetAPI.as_view(), name='api_reset_password'),  # noqa E501
+    path('reset_password/confirm/<uidb64>/<token>/',
+         PasswordResetConfirmAPI.as_view(), name='password_reset_confirm'),
 ] + router.urls

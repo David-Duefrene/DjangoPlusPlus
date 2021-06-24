@@ -2,17 +2,22 @@
 # Django imports
 from django.dispatch import receiver
 from django.urls import reverse
-from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.debug import sensitive_post_parameters
+from django.utils.decorators import method_decorator
 
 # Django REST imports
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, \
+    ListAPIView, GenericAPIView
+
+# DRF PW reset
+from django_rest_passwordreset.signals import reset_password_token_created
 
 # Knox imports
 from knox.models import AuthToken
@@ -20,7 +25,14 @@ from knox.models import AuthToken
 # Project imports
 from .models import BasicUser
 from .serializers import BasicUserSerializer, LoginSerializer, \
-    RegisterSerializer, ChangePasswordSerializer, EditSerializer
+    RegisterSerializer, ChangePasswordSerializer, EditSerializer, \
+    PasswordResetSerializer, PasswordResetConfirmSerializer
+
+sensitive_post_parameters_m = method_decorator(
+    sensitive_post_parameters(
+        'password', 'old_password', 'new_password', 'new_password',
+    ),
+)
 
 
 class UserAPI(RetrieveUpdateDestroyAPIView):
@@ -228,16 +240,94 @@ def ChangePasswordAPI(request):
 
 
 @receiver(reset_password_token_created)
-def password_reset_token_created(sender, instance, token, *args, **kwargs):
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):  # noqa E501
     """Send an email to a user when they try and reset their password."""
     email_message = "{}?token={}".format(
         reverse('password_reset:reset-password-request'),
-        token.key
+        reset_password_token.key
     )
 
     send_mail(
         "Password Reset for {title}".format(title="News"),  # title
         email_message,  # message
         "noreply@somehost.local",  # from
-        [token.user.email],  # to
+        [reset_password_token.user.email],  # to
     )
+
+
+class PasswordResetAPI(GenericAPIView):
+    """Sends a password reset email.
+
+    Allows a user to receive an email to reset their password.
+
+    Attributes:
+        serializer_class: default serializer is
+        permission_classes: default permission is AllowAny
+
+    Methods:
+        post(self, request): Sends a password reset email to a user
+    """
+
+    serializer_class = PasswordResetSerializer
+
+    def post(self, request, *args, **kwargs):
+        """Send a password reset email to a user.
+
+        request.data: JSON(string)
+            email: The user's email associated with the account
+
+        Returns Response: JSON(string)
+        """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'Password reset e-mail has been sent.'})
+
+
+class PasswordResetConfirmAPI(GenericAPIView):
+    """Finish resetting user's password.
+
+    Password reset e-mail link is confirmed, so this sets the user's password.
+
+    Attributes:
+        serializer_class: PasswordResetConfirmSerializer by default
+        permission_classes: AllowAny by default
+
+    Methods:
+        post(self, request): Verifies token and updates user's password
+    """
+
+    serializer_class = PasswordResetConfirmSerializer
+    permission_classes = (AllowAny,)
+
+    @sensitive_post_parameters_m
+    def dispatch(self, *args, **kwargs):
+        """Over ridded to hide password from logs."""
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """Verify token and updates user's password.
+
+        URL kwargs: reset_password/confirm/<uidb64>/<token>/
+            uidb64 - the unique user ID
+            token: the token generated when requesting a password change
+
+        request.data: JSON(string)
+            new_password: the new password the user is changing to
+
+        returns Response:
+            detail: lets the user know the password has been reset
+        """
+        data = {
+            'new_password': request.data['new_password'],
+            'uid': self.kwargs['uidb64'],
+            'token': self.kwargs['token'],
+        }
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {'detail': 'Password has been reset with the new password.'},
+        )
