@@ -1,8 +1,5 @@
 """API for detached head for the basic user module."""
 # Django imports
-from django.dispatch import receiver
-from django.urls import reverse
-from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.debug import sensitive_post_parameters
@@ -15,9 +12,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, \
     ListAPIView, GenericAPIView
-
-# DRF PW reset
-from django_rest_passwordreset.signals import reset_password_token_created
 
 # Knox imports
 from knox.models import AuthToken
@@ -237,22 +231,6 @@ def ChangePasswordAPI(request):
         return Response(response)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@receiver(reset_password_token_created)
-def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):  # noqa E501
-    """Send an email to a user when they try and reset their password."""
-    email_message = "{}?token={}".format(
-        reverse('password_reset:reset-password-request'),
-        reset_password_token.key
-    )
-
-    send_mail(
-        "Password Reset for {title}".format(title="News"),  # title
-        email_message,  # message
-        "noreply@somehost.local",  # from
-        [reset_password_token.user.email],  # to
-    )
 
 
 class PasswordResetAPI(GenericAPIView):
