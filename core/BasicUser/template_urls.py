@@ -2,7 +2,8 @@
 # Django imports
 from django.urls import path
 from django.contrib.auth.views import LogoutView, PasswordResetView, \
-    PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+    PasswordResetDoneView, PasswordResetConfirmView, \
+    PasswordResetCompleteView, PasswordChangeView, PasswordChangeDoneView
 
 # Django REST imports
 from rest_framework.routers import DefaultRouter
@@ -26,6 +27,12 @@ urlpatterns = [
          name='template_logout'),
     path('edit/', UpdateUserView.as_view(), name='template_edit_user'),
     path('delete/', DeleteUserView.as_view(), name='template_delete_user'),
+
+    # change password urls
+    path('password_change/', PasswordChangeView.as_view(),
+         name='template_password_change'),
+    path('password_change/done/', PasswordChangeDoneView.as_view(),
+         name='template_password_change_done'),
 
     # Reset password
     path('password_reset/', PasswordResetView.as_view(
