@@ -18,14 +18,6 @@ class BaseUserRegisterTest(TestCase):
             'password': 'nrf6V2', 'first_name': ''
         }
 
-    def register(self):
-        """Register a user.
-
-        Returns: server response.
-        """
-        return self.client.post(
-            reverse('template_create_user'), self.user_data, format='json')
-
     def test_register_page_url(self):
         """Test the CreateBasicUser template view.
 

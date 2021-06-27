@@ -42,6 +42,8 @@ class ListBasicUser(ListView):
 
     model = BasicUser
     template_name = 'ListBasicUser.html'
+    paginate_by = 25
+    context_object_name = 'user_list'
 
 
 class BasicUserDetail(DetailView):

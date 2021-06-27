@@ -1,7 +1,7 @@
 {% block content %}
     <h2>List of all Users</h2>
     <ul>
-        {% for users in object_list %}
+        {% for users in user_list %}
             <li>{{ users.username }}</li>
         {% endfor %}
     </ul>
