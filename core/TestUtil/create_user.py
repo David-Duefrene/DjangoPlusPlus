@@ -2,6 +2,7 @@
 from django.contrib.auth.models import User
 
 from faker import Faker
+import random
 
 
 def create_user(model=User):
@@ -9,7 +10,7 @@ def create_user(model=User):
     generator = Faker()
     full_name = generator.name()
     full_name = full_name.split()
-    username = full_name[0][0] + full_name[1] + str(generator.random)
+    username = full_name[0] + full_name[1] + str(random.randint(0, 1000))
 
     user = model.objects.create(
         username=username,

@@ -7,11 +7,7 @@ from TestUtil.create_user import create_user
 
 
 class ListUserTest(TestCase):
-    """Test the register template view.
-
-    Attributes:
-        user_data: the data used to register a user.
-    """
+    """Test the ListBasicUser template view."""
 
     def setUp(self):
         """Set up 50 users in the test DB."""
