@@ -27,7 +27,7 @@ class ViewUserTest(TestCase):
         self.assertTemplateUsed(response, template_name='BasicUserDetail.html')
 
     def test_detail_page_view_name(self):
-        """Test the BasicUserDetail view name.
+        """Test the BasicUserDetail template view name.
 
         Ensure the BasicUserDetail view name return HTTP 200 and uses the
         correct template.
