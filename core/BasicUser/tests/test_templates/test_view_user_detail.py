@@ -20,8 +20,7 @@ class ViewUserTest(TestCase):
     def test_detail_page_url(self):
         """Test the BasicUserDetail template view via URL.
 
-        Ensure the BasicUserDetail URL returns HTTP 200 and uses the
-        correct template.
+        Ensure the BasicUserDetail URL returns HTTP 200 and uses the correct template.
         """
         response = self.client.get("/template/BasicUser/view/1")
         self.assertEqual(response.status_code, 200)
