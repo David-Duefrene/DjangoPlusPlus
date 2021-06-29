@@ -5,7 +5,7 @@ from django.conf import settings
 
 from decimal import InvalidOperation
 
-from AbstractModels.AbstractBaseUser.models import AbstractBasicUser
+from .abstract_model import AbstractBasicUser
 
 
 class BasicUser(AbstractBasicUser, models.Model):

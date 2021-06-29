@@ -81,7 +81,7 @@ class LoginAPITest(APITestCase):
 
     def test_login_page_url(self):
         """Test the login user API view via URL."""
-        response = self.client.post("/api/BasicUser/login/", kwargs=self.login_data)
+        response = self.client.post("/api/BasicUser/login/", self.login_data)
         self.assertEqual(response.status_code, 200)
 
     def test_login_page_view_name(self):
