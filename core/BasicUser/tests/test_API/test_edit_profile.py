@@ -70,3 +70,15 @@ class EditProfileAPITest(APITestCase):
         self.updated_data['email'] = ''
         self.update_user()
         self.assertEqual(self.user.email, self.updated_data['email'])
+
+    def test_update_user_page_url(self):
+        """Test the update user API view via URL."""
+        self.client.force_authenticate(user=self.user)
+        response = self.client.patch("/api/BasicUser/edit/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_user_page_view_name(self):
+        """Test the update user view name."""
+        self.client.force_authenticate(user=self.user)
+        response = self.client.patch(reverse('api_edit_account'))
+        self.assertEqual(response.status_code, 200)

@@ -11,8 +11,7 @@ class ListUserTest(TestCase):
 
     def setUp(self):
         """Set up 50 users in the test DB."""
-        for unused in range(30):
-            create_user(model=get_user_model())
+        create_user(model=get_user_model())
 
     def test_list_page_url(self):
         """Test the ListBasicUser template view via URL.
@@ -36,16 +35,15 @@ class ListUserTest(TestCase):
 
     def test_pagination(self):
         """Test that pagination is set to 25 by default."""
+        for unused in range(29):
+                create_user(model=get_user_model())
         response = self.client.get(reverse('template_user_list'))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
         self.assertTrue(response.context['is_paginated'] is True)
         self.assertEqual(len(response.context['user_list']), 25)
 
-    def test_lists_all_users(self):
-        """Test to ensure second page only has 5 user's."""
+        # test 2nd page
         response = self.client.get(reverse('template_user_list') + '?page=2')
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(response.context['is_paginated'] is True)
         self.assertEqual(len(response.context['user_list']), 5)

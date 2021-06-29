@@ -12,26 +12,18 @@ class LoginAPITest(APITestCase):
     """Tests the Login API.
 
     Attributes:
-        login_data: the data used to login with.
-        BlankFieldError: The error that will be received if a required field
-            is blank.
+        login_data: the data used to login with
+        BlankFieldError: The error that will be received if a required field is blank
         IncorrectCredentialsError: The error that will be received if the
-            username or password is incorrect.
+            username or password is incorrect
 
     Methods:
-        setUp(self): creates a user for every test.
-        login(self): logs the user in with self.login_data.
-
-    Tests:
-        test_valid_credentials_can_login
-        test_bad_username_is_rejected
-        test_bad_password_is_rejected
-        test_no_username_is_rejected
-        test_no_password_is_rejected
+        setUp(self): creates a user for every test
+        login(self): logs the user in with login_data
     """
 
     def setUp(self):
-        """Create a user, sets up login data."""
+        """Create a user, sets up login data and errors."""
         user = create_user(model=BasicUser)
         self.login_data = {'username': user.username, 'password': 'password'}
         self.BlankFieldError = [ErrorDetail(
@@ -86,3 +78,13 @@ class LoginAPITest(APITestCase):
         response = self.login()
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.data, {'password': self.BlankFieldError})
+
+    def test_login_page_url(self):
+        """Test the login user API view via URL."""
+        response = self.client.post("/api/BasicUser/login/", kwargs=self.login_data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_login_page_view_name(self):
+        """Test the login user view name."""
+        response = self.client.post(reverse('api_login'), self.login_data)
+        self.assertEqual(response.status_code, 200)

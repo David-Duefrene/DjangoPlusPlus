@@ -16,9 +16,6 @@ class UserSerializerTest(APITestCase):
 
     Methods:
         setUp: Sets the test user and serializer.
-
-    Tests:
-        test_contains_expected_fields
     """
 
     def setUp(self):
@@ -47,9 +44,6 @@ class RegisterSerializerTest(APITestCase):
 
     Methods:
         setUp: Sets the test user and serializer.
-
-    Tests:
-        test_contains_expected_fields
     """
 
     def setUp(self):
@@ -58,7 +52,7 @@ class RegisterSerializerTest(APITestCase):
         self.serializer = RegisterSerializer(instance=self.user)
 
     def test_contains_expected_fields(self):
-        """Test the RegisterSerializer has expected fields.
+        """Test the register serializer has expected fields.
 
         Test to make sure the RegisterSerializer returns only a username,
         email, and name.
@@ -77,9 +71,6 @@ class LoginSerializerTest(APITestCase):
 
     Methods:
         setUp: Sets the test user and serializer.
-
-    Tests:
-        test_contains_expected_fields
     """
 
     def setUp(self):
@@ -93,8 +84,7 @@ class LoginSerializerTest(APITestCase):
         Test to make sure the login serializer takes only a username
         and password
         """
-        self.assertEqual(set(self.serializer.data.keys()),
-                         set(['username', 'password']))
+        self.assertEqual(set(self.serializer.data.keys()), set(['username', 'password']))
 
 
 class ChangePasswordSerializerTest(APITestCase):
@@ -106,9 +96,6 @@ class ChangePasswordSerializerTest(APITestCase):
 
     Methods:
         setUp: Sets the test user and serializer.
-
-    Tests:
-        test_contains_expected_fields
     """
 
     def setUp(self):
@@ -122,5 +109,4 @@ class ChangePasswordSerializerTest(APITestCase):
         Test to make sure the change password serializer only takes an old and
         new password.
         """
-        self.assertEqual(set(self.serializer.data.keys()),
-                         set(['old_password', 'new_password']))
+        self.assertEqual(set(self.serializer.data.keys()), set(['old_password', 'new_password']))

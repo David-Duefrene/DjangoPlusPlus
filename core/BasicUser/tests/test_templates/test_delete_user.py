@@ -7,7 +7,14 @@ from TestUtil.create_user import create_user
 
 
 class DeleteUserTest(TestCase):
-    """Test the delete user template view."""
+    """Test the delete user template view.
+
+    Attributes:
+        user: The test user
+
+    Methods:
+        setUp(self): Sets the test user
+    """
 
     def setUp(self):
         """Set up a user in the test DB."""

@@ -11,14 +11,10 @@ class ChangePasswordAPITest(APITestCase):
     """Test the Change Password API.
 
     Attributes:
-        user: A user created for testing purposes.
+        user: A test user
 
     Methods:
-        setUp: sets the test user.
-
-    Tests:
-        test_fails_missing_password_fields
-        test_can_change_password
+        setUp: sets the test user
     """
 
     def setUp(self):
@@ -53,3 +49,13 @@ class ChangePasswordAPITest(APITestCase):
         self.assertEqual(response.data['message'],
                          'Password updated successfully')
         self.assertEqual(response.status_code, 200)
+
+    def test_change_password_page_url(self):
+        """Test the change password API view via URL."""
+        response = self.client.put("/api/BasicUser/change_password/")
+        self.assertEqual(response.status_code, 302)
+
+    def test_change_password_page_view_name(self):
+        """Test the change password view name."""
+        response = self.client.put(reverse('api_change_password'))
+        self.assertEqual(response.status_code, 302)

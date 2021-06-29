@@ -9,7 +9,14 @@ from TestUtil.create_user import create_user
 
 
 class UserDetailAPITest(APITestCase):
-    """Test the user detail API."""
+    """Test the user detail API.
+
+    Attributes:
+        user: The test user
+
+    Methods:
+        setUp(self): Sets the test user
+    """
 
     def setUp(self):
         """Set up a user in the test DB."""
