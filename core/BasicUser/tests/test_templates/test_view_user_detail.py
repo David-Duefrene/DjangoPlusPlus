@@ -32,13 +32,13 @@ class ViewUserTest(TestCase):
         Ensure the BasicUserDetail view name return HTTP 200 and uses the
         correct template.
         """
-        response = self.client.get(reverse('template_user_detail', kwargs={'pk': '1'}))
+        response = self.client.get(reverse('template_view_user', kwargs={'pk': '1'}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='BasicUserDetail.html')
 
     def test_detail_template(self):
         """Test the template renders the proper user attributes."""
-        response = self.client.get(reverse('template_user_detail', kwargs={'pk': '1'}))
+        response = self.client.get(reverse('template_view_user', kwargs={'pk': '1'}))
         html = response.content.decode('utf8')
 
         self.assertIn('<h2>User Details</h2>', html)

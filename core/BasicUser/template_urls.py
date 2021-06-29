@@ -16,8 +16,8 @@ router = DefaultRouter()
 
 urlpatterns = [
     # View Users
-    path('view/<pk>', BasicUserDetail.as_view(), name='template_user_detail'),
     path('list/', ListBasicUser.as_view(), name='template_user_list'),
+    path('view/<pk>', BasicUserDetail.as_view(), name='template_view_user'),
 
     # Account creation and authentication
     path('create/', CreateBasicUser.as_view(), name='template_create_user'),
@@ -29,16 +29,16 @@ urlpatterns = [
     path('delete/', DeleteUserView.as_view(), name='template_delete_user'),
 
     # change password urls
-    path('password_change/', PasswordChangeView.as_view(),
-         name='template_password_change'),
-    path('password_change/done/', PasswordChangeDoneView.as_view(),
-         name='template_password_change_done'),
+    path('change_password/', PasswordChangeView.as_view(),
+         name='template_change_password'),
+    path('change_password/done/', PasswordChangeDoneView.as_view(),
+         name='template_change_password_done'),
 
     # Reset password
-    path('password_reset/', PasswordResetView.as_view(
+    path('reset_password/', PasswordResetView.as_view(
         template_name='password/password_reset_form.html'),
         name='template_password_reset'),
-    path('password_reset/done/', PasswordResetDoneView.as_view(
+    path('reset_password/done/', PasswordResetDoneView.as_view(
         template_name='Password_Reset_Done.html'),
         name='template_password_reset_done'),
     path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(

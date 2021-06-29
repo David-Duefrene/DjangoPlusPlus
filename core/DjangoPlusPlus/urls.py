@@ -6,6 +6,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Users
-    path('api/BasicUser/', include('BasicUser.urls')),
+    path('api/BasicUser/', include('BasicUser.api_urls')),
     path('template/BasicUser/', include('BasicUser.template_urls')),
 ]

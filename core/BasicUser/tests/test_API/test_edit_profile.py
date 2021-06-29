@@ -46,7 +46,7 @@ class EditProfileAPITest(APITestCase):
         """
         self.client.force_authenticate(user=self.user)
         self.response = self.client.patch(
-            reverse('api_edit_account'),
+            reverse('api_edit_user'),
             self.updated_data)
         self.user = BasicUser.objects.get(username=self.user.username)
 
@@ -80,5 +80,5 @@ class EditProfileAPITest(APITestCase):
     def test_update_user_page_view_name(self):
         """Test the update user view name."""
         self.client.force_authenticate(user=self.user)
-        response = self.client.patch(reverse('api_edit_account'))
+        response = self.client.patch(reverse('api_edit_user'))
         self.assertEqual(response.status_code, 200)

@@ -24,7 +24,7 @@ class BasicUser(AbstractBasicUser, models.Model):
             if settings.RESPONSE_MODE == 'API':
                 return reverse('api_view_user', kwargs={'pk': self.id})
             elif settings.RESPONSE_MODE == 'TEMPLATE':
-                return reverse('template_user_detail', kwargs={'pk': self.id})
+                return reverse('template_view_user', kwargs={'pk': self.id})
 
             raise InvalidOperation('Invalid Response Mode')
 

@@ -21,7 +21,7 @@ class ListUserAPITest(APITestCase):
 
     def test_list_page_view_name(self):
         """Test the List User API view view name."""
-        response = self.client.get(reverse('api_list_users'))
+        response = self.client.get(reverse('api_user_list'))
         self.assertEqual(response.status_code, 200)
 
     # pagination tests
@@ -29,12 +29,12 @@ class ListUserAPITest(APITestCase):
         """Test that 1st page is paginated by 25 by default."""
         for unused in range(29):
                 create_user(model=get_user_model())
-        response = self.client.get(reverse('api_list_users'))
+        response = self.client.get(reverse('api_user_list'))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('results' in response.data)
         self.assertEqual(len(response.data['results']), 25)
 
         # test 2nd page
-        response = self.client.get(reverse('api_list_users') + '?page=2')
+        response = self.client.get(reverse('api_user_list') + '?page=2')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data['results']), 5)

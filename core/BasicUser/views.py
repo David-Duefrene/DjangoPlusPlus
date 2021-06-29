@@ -108,7 +108,7 @@ class UpdateUserView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         """Return the user profile URL."""
-        return reverse_lazy('template_user_detail',
+        return reverse_lazy('template_view_user',
                             kwargs={'pk': self.request.user.id})
 
 
