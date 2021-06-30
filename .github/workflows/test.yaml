@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -27,5 +27,6 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 ./core --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run tests
-      run: |
-        python ./core/manage.py test
+      run: python ./core/manage.py test
+      env:
+        DJANGOMODE: API
