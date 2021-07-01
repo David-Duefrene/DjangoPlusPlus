@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  test:
+  doc:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -15,4 +15,4 @@ jobs:
       with:
         python-version: 3.9
     - name: Sphinx Pages
-  uses: seanzhengw/sphinx-pages@v1
+      uses: seanzhengw/sphinx-pages@v1
