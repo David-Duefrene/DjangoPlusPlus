@@ -14,5 +14,5 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: Sphinx Build
-      uses: ammaraskar/sphinx-action@0.4
+    - name: Sphinx Pages
+  uses: seanzhengw/sphinx-pages@v1
