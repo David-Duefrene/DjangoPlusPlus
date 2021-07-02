@@ -1,10 +1,10 @@
-# Basic User
-A basic user that currently contains only a django REST view inside of [API.py](API.py). Model only contains get_absolute_url property method and an attribute called URL_view_name containing the view get_absolute_url will reverse
+# Basic User Model
+A basic user that contains a django REST view and Django template views. Model only contains get_absolute_url property method and an attribute called URL_view_name containing the view get_absolute_url will reverse
 
 ## Abstract Base User
 A basic abstracted user meant to be expanded and used via inheritance.
 
-### Model Contains:
+### Contains:
 - Django Auth's UserManager
 - An id field automatically set up and is primary key
 - Email field
