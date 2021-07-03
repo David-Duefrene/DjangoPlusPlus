@@ -68,7 +68,7 @@ class UserAPI(RetrieveUpdateDestroyAPIView):
         """
         if self.request.method == 'POST':
             return (self.create_permission(),)
-        elif self.request.method == 'GET':
+        if self.request.method == 'GET':
             return (self.retrieve_profile_permission(),)
         return (self.permissions(),)
 
@@ -217,7 +217,6 @@ def ChangePasswordAPI(request):
         if not obj.check_password(serializer.data.get('old_password')):
             return Response({'old_password': ['Wrong password.']},
                             status=status.HTTP_400_BAD_REQUEST)
-            pass
 
         # set_password also hashes the password that the user will get
         obj.set_password(serializer.data.get('new_password'))

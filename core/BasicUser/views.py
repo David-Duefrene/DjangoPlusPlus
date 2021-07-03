@@ -129,7 +129,6 @@ class DeleteUserView(LoginRequiredMixin, DeleteView):
 
     model = BasicUser
     template_name = 'DeleteUser.html'
-    # TODO change to homepage after creating it
     success_url = reverse_lazy('template_user_list')
     login_url = reverse_lazy('template_login')
 
