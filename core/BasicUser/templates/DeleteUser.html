@@ -1,0 +1,7 @@
+<h2>Delete Account?</h2>
+<form action="" method="post">
+    {% csrf_token %}
+    <p>Your account as well as their related objects will be deleted. Are you sure?</p>
+    <input type="submit" value="Confirm deletion" name="confirm_delete" />
+    <input type="submit" value="Cancel" name="cancel"/>
+</form>

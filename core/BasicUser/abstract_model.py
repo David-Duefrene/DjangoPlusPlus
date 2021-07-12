@@ -1,11 +1,10 @@
-"""Abstract models for a basic user account."""
+"""Abstract model for an abstracted basic user account."""
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db.models import EmailField, DateTimeField, BigAutoField
-from django.urls import reverse
 
 
-class AbstractBaseUser(AbstractUser):
-    """AbstractBaseUser is an abstract model that describes a basic user.
+class AbstractBasicUser(AbstractUser):
+    """AbstractBasicUser is an abstract model that describes a basic user.
 
     Attributes:
         objects: UserManager
@@ -19,7 +18,6 @@ class AbstractBaseUser(AbstractUser):
 
     Methods:
         __str__(self): Return name or username as a string
-        get_absolute_url(self): Returns the users edit url
     """
 
     objects = UserManager()
@@ -28,10 +26,10 @@ class AbstractBaseUser(AbstractUser):
     created = DateTimeField(auto_now_add=True, db_index=True)
 
     class Meta:
-        """The Meta
+        """The Meta.
 
         Attributes:
-            ordering: ID
+            ordering: id
             abstract(bool): True
         """
 
@@ -40,11 +38,6 @@ class AbstractBaseUser(AbstractUser):
 
     def __str__(self):
         """Return the name or username as a string."""
-        if self.name:
-            return self.name
-        return self.username
-
-    @property
-    def get_absolute_url(self):
-        """Return the edit profile url."""
-        return reverse('edit_account')
+        if self.get_full_name() == '':
+            return self.username
+        return f'{self.first_name} {self.last_name}'
