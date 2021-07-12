@@ -17,3 +17,10 @@ jobs:
         rootDocsFolder: "/Doc"
       env:
         GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        docs-folder: "docs/"
